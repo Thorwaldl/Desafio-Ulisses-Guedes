@@ -48,4 +48,33 @@ describe('CaixaDaLanchonete', () => {
         ['queijo com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
     ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
         validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+// testes adicionais criados por mim iniciam apartir daqui
+
+// testes relativos aos combos pois esse não foram avaliadaos durante qualquer outro teste
+test.each([
+    ['Combo1', 'debito', 'R$ 9,50', ['combo1,1']],
+    ['Combo1 com queijo', 'debito', 'Item extra não pode ser pedido sem o principal', ['combo1,1','queijo,1']],
+    ['Combo2', 'debito', 'R$ 7,50', ['combo2,1']],
+    ['Combo2 com queijo', 'debito', 'Item extra não pode ser pedido sem o principal', ['combo2,1','queijo,1']],
+    ['Combo2 com chantily', 'debito', 'Item extra não pode ser pedido sem o principal', ['combo2,1','chantily,1']],
+])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+    validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+// não tinha nenhum teste que envolvesse salgados ou sucos, logo adicionei-os
+test.each([
+    ['salgado', 'debito', 'R$ 7,25', ['salgado,1']],
+    ['suco', 'debito', 'R$ 6,20', ['suco,1']],
+])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+    validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+// testes para cobrir se chantily esta sendo própriamente tratado pois na bateria de testes original a linha 64 não era coberta
+    test.each([
+        ['cafe e chantily junto', 'debito', 'R$ 4,50', ['cafe,1','chantily,1']],
+        ['cafe e muito chantily junto', 'debito', 'R$ 18,00', ['cafe,1','chantily,10']],
+        ['cafe e sem chantily junto', 'debito', 'Quantidade inválida!', ['cafe,1','chantily,0']],
+        ['cafe e chantily negativo', 'debito', 'Quantidade inválida!', ['cafe,1','chantily,-10']],
+        ['cafe e chantily chantilys', 'debito', 'Quantidade inválida!', ['cafe,1','chantily,chantily']],
+    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+        validaTeste(formaDePagamento, resultadoEsperado, itens));
 });

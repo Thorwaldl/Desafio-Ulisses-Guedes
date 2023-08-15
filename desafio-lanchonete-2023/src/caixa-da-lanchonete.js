@@ -8,14 +8,14 @@ class CaixaDaLanchonete {
         return Number.parseFloat(number).toFixed(2);
     }
 
-    //responssável por calcular o resultado de descontos/taxas baseada em precentual
-    Percent(number, percent){
-    return number+((percent / 100) * number);
+    //responssável por calcular o resultado de descontos/taxas baseada em percentual
+    percent(number, percent){
+        return number+((percent / 100) * number);
     }
 
-    //classe responssável por ler o array de input e retornar o valor bruto dos itens,
-    // tendo já em sí tratamento aos erros descobertos na faze
-    Reader(itens){
+    //método responssável por ler o array de input e retornar o valor bruto dos itens,
+    // tendo já em si tratamento aos erros descobertos na fase
+    reader(itens){
         //declaração em arrys do menu e de seus preços 
         const produto = ["cafe", "chantily", "suco", "sanduiche", "queijo", "salgado", "combo1", "combo2"];
         const preco = [3, 1.5, 6.2, 6.5, 2, 7.25, 9.5, 7.5];
@@ -34,7 +34,7 @@ class CaixaDaLanchonete {
         while (indexItens<itens.length) {
 
             //percorre o array de input e procura na lista de produtos o item com identificador equivalente
-            //obtendo seu index no processo, caso não seja encontrado dispara o erro item inválido
+            //obtendo seu index no processo, caso não seja encontrado, dispara o erro de item inválido
             split = itens[indexItens].split(",");
             console.log(split[0]);
             index = produto.indexOf(split[0]);
@@ -43,9 +43,9 @@ class CaixaDaLanchonete {
                 return -1;
             }
 
-            //busca no array de input a quantia desejada do item, novamente faz também o disparo de erro
+            //busca no array de input a quantia desejada do item, novamente faz também o disparo de erro, se necessário
             numeroItens=split[1];
-            if(numeroItens<1){
+            if(numeroItens<1||isNaN(numeroItens)){
                 console.log("Quantidade inválida!");
                 return -2;
             }
@@ -89,7 +89,7 @@ class CaixaDaLanchonete {
         }
 
         let valor=0;
-        valor=this.Reader(itens);
+        valor=this.reader(itens);
         //checagem de se erro foi retornado e qual foi
         if(valor<0){
             switch (valor) {
@@ -106,13 +106,13 @@ class CaixaDaLanchonete {
         //Responssável por lidar com os métodos de pagamento e dar os desontos/txas adequados
         switch (metodoDePagamento) {
             case 'dinheiro':
-                valor = this.Percent(valor,-5);
+                valor = this.percent(valor,-5);
                 break;
             case 'debito':
                 //não muda nada no valor no cenário de débito mas esse case ainda existe por ser um input válido
                 break;
             case 'credito':
-                valor = this.Percent(valor,3);
+                valor = this.percent(valor,3);
                 break;
             default:
             console.log("Forma de pagamento inválida!");
